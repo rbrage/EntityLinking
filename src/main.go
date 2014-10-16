@@ -11,14 +11,14 @@ import (
 func main() {
 
 	path := ""
-
-	if err := os.Args; err == nil {
+	fmt.Println(os.Args)
+	if len(os.Args) > 1 {
 		if len(os.Args) < 2 {
 			fmt.Println("You need to send in some values as arguments to use this program.")
 		}
 		path = os.Args[1]
 	} else {
-		path = "/home/rbrage/Program/go/text.txt"
+		path = "/home/rbrage/Program/EntityLinking/text.txt"
 	}
 	fmt.Printf("Starts reading the file.\n")
 	ReadFromFile(path)
