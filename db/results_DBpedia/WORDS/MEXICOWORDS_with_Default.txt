@@ -1,0 +1,22 @@
+mass:1846
+hills:1791
+U.S.:1687
+police:1513
+Authorities:1245
+police:1191
+Guerrero:902
+country:810
+police:661
+people:600
+Office:539
+Attorney General:520
+security:370
+Mexico City:322
+Angeles:289
+Luis:250
+Sept.:156
+Mexican:87
+police:24
+Federal:16
+CITY:7
+MEXICO:0

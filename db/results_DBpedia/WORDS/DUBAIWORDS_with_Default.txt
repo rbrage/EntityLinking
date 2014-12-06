@@ -1,0 +1,14 @@
+Riyadh:895
+west:887
+people:761
+Shi'ites:739
+SPA:496
+Shi'ite Islam:462
+Ashoura:437
+people:383
+Dubai:297
+Riyadh:274
+Saudi:186
+Saudi Arabia:168
+gun:146
+security:41

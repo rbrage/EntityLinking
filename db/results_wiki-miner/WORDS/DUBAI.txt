@@ -1,0 +1,33 @@
+Kilometre:867
+Town:842
+Cell (biology):698
+Emergency service:610
+Shooting:545
+Spain:496
+Law of agency:489
+News:484
+Islam:470
+Shia Islam:462
+Guy Fawkes Night:445
+Day of Ashura:437
+Annual plant:430
+District:409
+Bahrain (historical region):404
+Al-Hasa:401
+Crime:361
+24 (TV series):346
+Television channel:319
+Satellite:309
+Dubai:297
+Riyadh:274
+Provinces and territories of Canada:256
+Al-Qassim Province:249
+Al-Qasim ibn Muhammad ibn Abi Bakr:246
+Television:209
+Al Arabiya:198
+Arabian Peninsula:174
+Saudi Arabia:168
+Gun:146
+Hunting:108
+October 10:72
+Security:41

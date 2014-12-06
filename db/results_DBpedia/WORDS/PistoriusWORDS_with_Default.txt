@@ -1,0 +1,38 @@
+South African:2266
+Pretoria:2252
+Central:2240
+Pretoria:2231
+Matilda:1793
+Judge:1777
+Oscar:1463
+Authority:1369
+Prosecuting:1357
+National:1348
+Twitter:1305
+House:1240
+Move:1232
+Sentence:1214
+Year:1209
+Oscar:1187
+Pretoria:1167
+High Court:1153
+Gauteng:1145
+North:1139
+Oscar:1116
+Conviction:1079
+Appeal:1062
+Prosecutors:1036
+South African:1022
+Pretoria:1002
+High Court:988
+Gauteng:980
+North:974
+Oscar:951
+Continue:901
+Feb.:885
+toilet:862
+graduate:746
+South African:429
+Oscar:201
+South African:66
+audience:56
