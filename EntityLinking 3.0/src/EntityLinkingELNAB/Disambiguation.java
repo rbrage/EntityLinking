@@ -1,5 +1,6 @@
 package EntityLinkingELNAB;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,6 +21,7 @@ import jung.GraphVisualization;
 import jung.Link;
 import utility.MongoDB;
 import utility.PrintToFile;
+import utility.Reader;
 
 public class Disambiguation {
 
@@ -31,15 +33,30 @@ public class Disambiguation {
 
 	HashMap<String, Integer> candidatelist;
 	HashMap<String, Long> facc12list;
-
+	HashMap<Integer, String> hashStopWords, NONhashStopWords;
+	String[] listOfStopWords;
+	String[] NONStopWords = {"and", "of", "in"};
 	MongoDB mDB;
 
 	public List<Annotation> runDisambiguation(List<Annotation> annotations,
-			Settings settings) {
+			Settings settings) throws IOException {
 		this.annotations = annotations;
 		this.threshold = settings.getThreshold();
 		this.makegraf = settings.isMakegraf();
 		this.makefreebaseCalls = settings.isMakefreebaseCalls();
+		Reader reader = new Reader();
+		this.listOfStopWords = reader
+				.readFilesLines("/home/rbrage/Program/EntityLinking/en-stopwords.txt");
+
+		this.hashStopWords = new HashMap<Integer, String>();
+		for (int i = 0; i < this.listOfStopWords.length; i++) {
+			this.hashStopWords.put(i, this.listOfStopWords[i]);
+		}
+		this.NONhashStopWords = new HashMap<Integer, String>();
+		for (int i = 0; i < this.NONStopWords.length; i++) {
+			this.NONhashStopWords.put(i, this.NONStopWords[i]);
+		}
+		
 
 		for (Annotation a : this.annotations) {
 			/*
@@ -95,6 +112,8 @@ public class Disambiguation {
 			Annotation a = annotations_iter.next();
 			if (a.getPrimaryID() == null) {
 				remove = true;
+			}else if(this.hashStopWords.containsValue(a.getMentionText().trim().toLowerCase()) || this.NONhashStopWords.containsValue(a.getMentionText().trim().toLowerCase())){
+				remove = true;
 			} else {
 				DBCursor cursor = mDB.getCandidates(a.getPrimaryID());
 				try {
@@ -133,18 +152,26 @@ public class Disambiguation {
 			if (a.getNew_facc12() != null) {
 				Iterator<Entry<String, Integer>> newFacc = a.getNew_facc12()
 						.entrySet().iterator();
-				String fbMID = null;
+				String fbMID = a.getPrimaryID().substring(a.getPrimaryID().lastIndexOf("/")+1,a.getPrimaryID().length());
 				long test = 0;
 
 				while (newFacc.hasNext()) {
 					String tmp = newFacc.next().toString();
+					String tmp_fbMID = tmp.substring(0, tmp.indexOf("="))
+							.trim();
 					if (a.getNew_facc12().size() <= 1) {
-						fbMID = tmp.substring(0, tmp.indexOf("=")).trim();
+						if( a.getFacc12().get(
+								"<fb:m\\u002e" + tmp_fbMID + ">") > 500){
+								fbMID = tmp_fbMID;
+						}
+						
 					} else {
-						String tmp_fbMID = tmp.substring(0, tmp.indexOf("="))
+						tmp_fbMID = tmp.substring(0, tmp.indexOf("="))
 								.trim();
+						
 						if (test < a.getFacc12().get(
-								"<fb:m\\u002e" + tmp_fbMID + ">")) {
+								"<fb:m\\u002e" + tmp_fbMID + ">") && a.getFacc12().get(
+										"<fb:m\\u002e" + tmp_fbMID + ">") > 500) {
 							test = a.getFacc12().get(
 									"<fb:m\\u002e" + tmp_fbMID + ">");
 							fbMID = tmp_fbMID;

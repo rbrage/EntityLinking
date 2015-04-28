@@ -7,10 +7,10 @@ import java.util.Map;
 
 public class Annotation {
 	private String DocId;
-	private Integer BeginOffset;
-	private Integer EndOffset;
-	private Integer BeginOffset2;
-	private Integer EndOffset2;
+	private int BeginOffset;
+	private int EndOffset;
+	private int BeginOffset2;
+	private int EndOffset2;
 	private String PrimaryID;
 	private String SecondID;
 	private String MentionText;

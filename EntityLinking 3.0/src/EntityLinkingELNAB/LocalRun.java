@@ -27,7 +27,7 @@ public class LocalRun {
 			String filename = files.get(i).substring(
 					files.get(i).lastIndexOf("/") + 1,
 					files.get(i).lastIndexOf("."));
-//			if(filename.equals("mainbody-00042")){
+//			if(filename.equals("mainbody-00003")){
 			System.out.println("Strating: "+ filename);
 			
 			ELNAB elnab = new ELNAB();
@@ -36,7 +36,7 @@ public class LocalRun {
 			String textTVS = encodeAnnotations(annotations);
 			
 			write.printToFile(textTVS, folderPath, filename,
-					false, "TVS");
+					true, "TVS");
 			
 			doc = new DocumentMaker(annotations, originalText, threshold, filename);
 			write.printHTMLToFile(doc.getHTMLString(), folderPath, filename, "erd");

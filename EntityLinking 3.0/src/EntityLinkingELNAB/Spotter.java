@@ -20,7 +20,7 @@ public class Spotter { // WordSpotter
 	long startTime = 0;
 	long stopTime = 0;
 
-	HashMap<Integer, String> hashStopWords, hashHonorificsWords;
+	HashMap<Integer, String> hashStopWords, NONhashStopWords, hashHonorificsWords;
 	StringBuilder finalWords, finalString;
 
 	String originalText;
@@ -37,6 +37,8 @@ public class Spotter { // WordSpotter
 			"MAR.", "APR.", "MAY.", "JUN.", "JUL.", "AUG.", "SEP.", "OCT.",
 			"NOV.", "DES.", "jan.", "feb.", "mar.", "apr.", "may.", "jun.",
 			"jul.", "aug.", "sep.", "oct.", "nov.", "dec." };
+	
+	String[] NONStopWords = {"and", "of", "in"};
 
 	public Spotter() throws IOException {
 		this.reader = new Reader();
@@ -53,6 +55,12 @@ public class Spotter { // WordSpotter
 		for (int i = 0; i < this.honorifics.length; i++) {
 			this.hashHonorificsWords.put(i, this.honorifics[i]);
 		}
+		
+		this.NONhashStopWords = new HashMap<Integer, String>();
+		for (int i = 0; i < this.NONStopWords.length; i++) {
+			this.NONhashStopWords.put(i, this.NONStopWords[i]);
+		}
+		
 	}
 
 	List<Annotation> annotations = new ArrayList<Annotation>();
@@ -63,66 +71,58 @@ public class Spotter { // WordSpotter
 		int startOffset = 0;
 		int startOffset2 = 0;
 		int endOffset = 0;
-		
+
 		String[] wordList = textToAnalyse.split(" ");
 
 		for (int i = 0; i < wordList.length; i++) {
 
 			String wordis = "";
-			// Checks for honorifics word
-			if (this.hashHonorificsWords.containsValue(wordList[i])) {
-				int wr = countCapitalizedWord(wordList, i + 1);
-				for (int j = i; j <= (i + wr); j++) {
-					wordis = wordis + " " + wordList[j];
+			// Checks for capitalized word
+			if (capitalized(wordList[i])) {
+				int wr = countCapitalizedWord(wordList, i);
+				for (int j = i; j <= (i + wr - 1); j++) {
+					wordis = wordis + wordList[j] + " ";
 				}
-				i = i + wr + 1;
-
+				if (wr > 1) {
+					i = i + wr-1;
+				}
 				if (textToAnalyse.indexOf(wordis.trim(), endOffset) != -1) {
 					wordis = wordis.trim();
 					startOffset = textToAnalyse.indexOf(wordis, endOffset);
 				} else
 					startOffset = textToAnalyse.indexOf(wordis, endOffset);
 
-				endOffset = startOffset + wordis.length();
-			
-
-			} else { // Checks for capitalized word
-				if (capitalized(wordList[i])) {
-					int wr = countCapitalizedWord(wordList, i);
-					for (int j = i; j <= (i + wr - 1); j++) {
-						wordis = wordis + wordList[j] + " ";
-					}
-					if (wr > 1) {
-						i = i + wr;
-					}
-					if (textToAnalyse.indexOf(wordis.trim(), endOffset) != -1) {
-						wordis = wordis.trim();
-						startOffset = textToAnalyse
-								.indexOf(wordis, endOffset);
-					} else
-						startOffset = textToAnalyse
-								.indexOf(wordis, endOffset);
-
-					if(endOfSentenc(wordis)){
-						endOffset = startOffset + wordis.length()-1;
-					}else
-						endOffset = startOffset + wordis.length();
-				}
+				if (endOfSentenc(wordis)) {
+					endOffset = startOffset + wordis.length() - 1;
+				} else
+					endOffset = startOffset + wordis.length();
 			}
-			
+
+
 			wordis = wordis.replaceAll("\n", " ");
 			wordis = wordis.trim();
-			
+
+			if(containsSymbols(wordis)){
+				while(endOfSentenc(wordis) || startWithSymbol(wordis)){
+					if(endOfSentenc(wordis)){
+						wordis = wordis.substring(0, wordis.length()-1);
+					}
+					if(startWithSymbol(wordis)){
+						wordis = wordis.substring(1, wordis.length());
+					}
+				}
+			}
+
 			if (!wordis.isEmpty()) {
 				a = new Annotation();
 				a.setDocId(textID);
 				a.setMentionText(wordis.trim());
 				a.setMentionText2(wordis.trim());
-				a.setBeginOffset(startOffset+startOffset2);
-				a.setEndOffset(endOffset+startOffset2);
-				a.setBeginOffset2(startOffset+startOffset2);
-				a.setEndOffset2(endOffset+startOffset2);
-				
+				a.setBeginOffset(startOffset + startOffset2);
+				a.setEndOffset(endOffset + startOffset2);
+				a.setBeginOffset2(startOffset + startOffset2);
+				a.setEndOffset2(endOffset + startOffset2);
+
 				annotations.add(a);
 
 				startOffset = endOffset;
@@ -130,7 +130,6 @@ public class Spotter { // WordSpotter
 		}
 		return annotations;
 	}
-	
 
 	int set = 0;
 
@@ -138,14 +137,14 @@ public class Spotter { // WordSpotter
 	private int countCapitalizedWord(String[] wordList, int i) {
 		set = 0;
 		if (i < wordList.length) {
-			if (capitalized(wordList[i])) {
+			if (capitalized(wordList[i])|| (this.NONhashStopWords.containsKey(wordList[i])&&set>1)) {
 				if (!this.hashStopWords.containsValue(wordList[i].trim()
 						.toLowerCase())
 						&& !this.hashStopWords.containsValue(symbolRemove(
 								wordList[i]).toLowerCase())
-						&& !this.hashHonorificsWords.containsValue(wordList[i]
-								.trim())) {
-					
+								&& !this.hashHonorificsWords.containsValue(wordList[i]
+										.trim())) {
+
 					if (breakLine(wordList[i])) {
 						return set + 1;
 					}
@@ -159,7 +158,7 @@ public class Spotter { // WordSpotter
 					return set = (1 + countCapitalizedWord(wordList, i + 1));
 
 				} else
-					return 0;
+					return set;
 			} else
 				return set;
 
@@ -168,27 +167,52 @@ public class Spotter { // WordSpotter
 	}
 
 	private boolean breakLine(String word) {
-		if(word.equals("\n")){
+		if (word.equals("\n")) {
 			return true;
 		}
 		return false;
 	}
-	private boolean endOfSentenc(String word) {
-			if (word.lastIndexOf(".") != -1) {
-				if (!word.substring(word.lastIndexOf(".") + 1).equals(" ")){
-					return false;
 
-			} else if (word.length() > 2) {
-				if (word.substring(word.trim().length() - 1).trim().matches("[\\.,?!“()”\"]")) {
+	private boolean endOfSentenc(String word) {
+		if (containsSymbols(word)) {
+			if (word.substring(word.length()).equals(".")
+					|| word.substring(word.length()).equals(",")) {
+				return false;
+			} else if (word.length() > 3) {
+				if (word.lastIndexOf(".") != -1 && word.lastIndexOf(".") > 2) {
+					if (word.substring(word.lastIndexOf(".") - 2,
+							word.lastIndexOf(".") - 1).equals(".")) {
+						return false;
+					} else if (word.substring(word.trim().length() - 1).trim()
+							.matches("[\\.,?!“()”\"]")) {
+						return true;
+					}
+				} else if (word.substring(word.trim().length() - 1).trim()
+						.matches("[\\.,?!“()”\"]")) {
 					return true;
 				}
-			}else
+			} else
 				return false;
-			}
-			return false;
-
 		}
+		return false;
 
+	}
+	private boolean startWithSymbol(String word) {
+		if (containsSymbols(word)) {
+			if (word.length() > 3) {
+				if (word.substring(0,1).trim()
+						.matches("[\\.,?!“()”\"]")) {
+					return true;
+				}
+			}else if (word.substring(0,1).trim()
+					.matches("[\\.,?!“()”\"]")) {
+				return true;
+			}
+		} else
+			return false;
+		return false;
+
+	}
 
 	// Method that checks if there is a capitalized letter in word.
 	private boolean capitalized(String word) {
@@ -208,10 +232,36 @@ public class Spotter { // WordSpotter
 	}
 
 	private String symbolRemove(String spottedWord) {
-		if(spottedWord.substring(spottedWord.lastIndexOf(".")+1).equals(" ")){
+		if (spottedWord.substring(spottedWord.lastIndexOf(".") + 1).equals(" ")) {
 			spottedWord = spottedWord.replaceAll("[\\,“()”?.'\"]", "");
 		}
 		return spottedWord = spottedWord.trim();
 	}
 
+	private boolean containsSymbols(String wordis) {
+		Pattern p = Pattern
+				.compile("[\\,“().”?':\"]", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(wordis);
+		boolean b = m.find();
+		return b;
+	}
 }
+/*
+ * // Checks for honorifics word
+			if (this.hashHonorificsWords.containsValue(wordList[i])) {
+				int wr = countCapitalizedWord(wordList, i + 1);
+				for (int j = i; j <= (i + wr); j++) {
+					wordis = wordis + " " + wordList[j];
+				}
+				i = i + wr + 1;
+
+				if (textToAnalyse.indexOf(wordis.trim(), endOffset) != -1) {
+					wordis = wordis.trim();
+					startOffset = textToAnalyse.indexOf(wordis, endOffset);
+				} else
+					startOffset = textToAnalyse.indexOf(wordis, endOffset);
+
+				endOffset = startOffset + wordis.length();
+
+			} else { 
+ */

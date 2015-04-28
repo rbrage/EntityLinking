@@ -33,9 +33,9 @@ public class LinkDetection {
 	Settings settings;
 	
 	String[] listOfStopWords;
-	HashMap<Integer, String> hashStopWords;
+	HashMap<Integer, String> hashStopWords, NONhashStopWords;
 	String originalText;
-	
+	String[] NONStopWords = {"and", "of", "in"};
 
 	public List<Annotation> runLinkDetection(List<Annotation> annotations, String originalText, Settings settings) throws IOException {
 		this.annotations = annotations;
@@ -57,6 +57,11 @@ public class LinkDetection {
 			this.hashStopWords.put(i, this.listOfStopWords[i]);
 		}
 		
+		this.NONhashStopWords = new HashMap<Integer, String>();
+		for (int i = 0; i < this.NONStopWords.length; i++) {
+			this.NONhashStopWords.put(i, this.NONStopWords[i]);
+		}
+		
 		for (Annotation a : this.annotations) {
 			String spottedWord = a.getMentionText();
 			DBCursor cursor = mDB.getCandidates(spottedWord);
@@ -71,11 +76,14 @@ public class LinkDetection {
 				cursor = mDB.getCandidates(spottedWord);
 			}
 			if (!cursor.hasNext() && settings.isSolvSuspectSpotts()) {
+				
+				if(a.getMentionText().split(" ").length >1){
 				annotations_extra = solveSuspectSpot(a.getMentionText(), a);
 				for (Annotation annotation_extra : annotations_extra) {
 					if (!annotation_extra.getFacc12().isEmpty()){
 						annotations_tmp.add(annotation_extra);
 					}
+				}
 				}
 			}
 			
@@ -112,7 +120,7 @@ public class LinkDetection {
 		for (Annotation annotation_extra : annotations_tmp) {
 			this.annotations.add(annotation_extra);
 		}
-
+		
 		return this.annotations;
 	}
 
@@ -180,6 +188,7 @@ public class LinkDetection {
 				}
 				
 				String spottedWord_testphase = testphrase.toString().trim();
+				String spottedWord_testphase1 = testphrase.toString().trim();
 				if (pluralApostrophe(spottedWord_testphase) && this.settings.isPluralApostrophe_remove()) {
 					spottedWord_testphase = pluralApostropheRemove(spottedWord_testphase);
 				}
@@ -195,7 +204,17 @@ public class LinkDetection {
 							if (next.get("facc12") != null) {
 								Annotation tmpA = new Annotation();
 								tmpA.setDocId(a.getDocId());
-								tmpA.setMentionText(testphrase.toString().trim());
+								if(containsSymbols(spottedWord_testphase1)){
+									while(endOfSentenc(spottedWord_testphase1) || startWithSymbol(spottedWord_testphase1)){
+										if(endOfSentenc(spottedWord_testphase1)){
+											spottedWord_testphase1 = spottedWord_testphase1.substring(0, spottedWord_testphase1.length()-1);
+										}
+										if(startWithSymbol(spottedWord_testphase1)){
+											spottedWord_testphase1 = spottedWord_testphase1.substring(1, spottedWord_testphase1.length());
+										}
+									}
+								}
+								tmpA.setMentionText(spottedWord_testphase1);
 								tmpA.setShearchWord(spottedWord_testphase);
 								tmpA.setMentionText2(a.getMentionText2());
 								tmpA.setBeginOffset2(a.getBeginOffset2());
@@ -258,5 +277,46 @@ public class LinkDetection {
 		}
 		
 		return tmpAnnotations;
+	}
+	
+	private boolean endOfSentenc(String word) {
+		if (containsSymbols(word)) {
+			if (word.substring(word.length()).equals(".")
+					|| word.substring(word.length()).equals(",")) {
+				return false;
+			} else if (word.length() > 3) {
+				if (word.lastIndexOf(".") != -1 && word.lastIndexOf(".") > 2) {
+					if (word.substring(word.lastIndexOf(".") - 2,
+							word.lastIndexOf(".") - 1).equals(".")) {
+						return false;
+					} else if (word.substring(word.trim().length() - 1).trim()
+							.matches("[\\.,?!“()”\"]")) {
+						return true;
+					}
+				} else if (word.substring(word.trim().length() - 1).trim()
+						.matches("[\\.,?!“()”\"]")) {
+					return true;
+				}
+			} else
+				return false;
+		}
+		return false;
+
+	}
+	private boolean startWithSymbol(String word) {
+		if (containsSymbols(word)) {
+			if (word.length() > 3) {
+				if (word.substring(0,1).trim()
+						.matches("[\\.,?!“()”\"]")) {
+					return true;
+				}
+			}else if (word.substring(0,1).trim()
+					.matches("[\\.,?!“()”\"]")) {
+				return true;
+			}
+		} else
+			return false;
+		return false;
+
 	}
 }

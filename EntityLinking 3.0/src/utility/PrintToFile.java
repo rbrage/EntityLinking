@@ -26,7 +26,7 @@ public class PrintToFile {
 				writer.close();
 			} else {
 				writer = new PrintWriter(folderPath + "/results_" + prog
-						+ "/WORDS/" + filename + ".tsv", "UTF-8");
+						+ "/" + filename + ".tsv", "UTF-8");
 				writer.print(text);
 				writer.close();
 			}
