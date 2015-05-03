@@ -27,7 +27,8 @@ public class LocalRun {
 			String filename = files.get(i).substring(
 					files.get(i).lastIndexOf("/") + 1,
 					files.get(i).lastIndexOf("."));
-//			if(filename.equals("mainbody-00003")){
+			//msn-2014-03-28-00490
+//			if(filename.equals("mainbody-00061")){
 			System.out.println("Strating: "+ filename);
 			
 			ELNAB elnab = new ELNAB();
@@ -38,11 +39,11 @@ public class LocalRun {
 			write.printToFile(textTVS, folderPath, filename,
 					true, "TVS");
 			
-			doc = new DocumentMaker(annotations, originalText, threshold, filename);
-			write.printHTMLToFile(doc.getHTMLString(), folderPath, filename, "erd");
-			
-			doc = new DocumentMaker(annotations, originalText, threshold);
-			write.printToFile(doc.getTXTString(), folderPath, filename,false, "erd");
+//			doc = new DocumentMaker(annotations, originalText, threshold, filename);
+//			write.printHTMLToFile(doc.getHTMLString(), folderPath, filename, "erd");
+//			
+//			doc = new DocumentMaker(annotations, originalText, threshold);
+//			write.printToFile(doc.getTXTString(), folderPath, filename,false, "erd");
 			
 			float status = ((float)(i+1)/files.size())*100;
 			System.out.println(filename + " is done! \n"+status+"% \n------------------------ " );
@@ -56,7 +57,6 @@ public class LocalRun {
 		StringBuilder sb = new StringBuilder();
 		for (Annotation a : annotations) {
 			sb.append(a.toTVS()).append('\n');
-
 		}
 		return sb.toString();
 	}

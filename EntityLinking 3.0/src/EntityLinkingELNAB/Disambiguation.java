@@ -28,6 +28,7 @@ public class Disambiguation {
 	int threshold;
 	boolean makegraf;
 	boolean makefreebaseCalls;
+	boolean makeGraphDisambigutation;
 
 	List<Annotation> annotations;
 
@@ -44,6 +45,7 @@ public class Disambiguation {
 		this.threshold = settings.getThreshold();
 		this.makegraf = settings.isMakegraf();
 		this.makefreebaseCalls = settings.isMakefreebaseCalls();
+		this.makeGraphDisambigutation = settings.isMakeGraphDisambigutation();
 		Reader reader = new Reader();
 		this.listOfStopWords = reader
 				.readFilesLines("/home/rbrage/Program/EntityLinking/en-stopwords.txt");
@@ -138,7 +140,8 @@ public class Disambiguation {
 			}
 		});
 
-		this.annotations = makeGraphDisambigutation(this.annotations);
+		if(makeGraphDisambigutation)
+			this.annotations = makeGraphDisambigutation(this.annotations);
 
 		if (makegraf) {
 			EntityGraph eg = new EntityGraph(this.annotations, settings);
@@ -161,7 +164,7 @@ public class Disambiguation {
 							.trim();
 					if (a.getNew_facc12().size() <= 1) {
 						if( a.getFacc12().get(
-								"<fb:m\\u002e" + tmp_fbMID + ">") > 500){
+								"<fb:m\\u002e" + tmp_fbMID + ">") > 2000){
 								fbMID = tmp_fbMID;
 						}
 						
@@ -171,7 +174,7 @@ public class Disambiguation {
 						
 						if (test < a.getFacc12().get(
 								"<fb:m\\u002e" + tmp_fbMID + ">") && a.getFacc12().get(
-										"<fb:m\\u002e" + tmp_fbMID + ">") > 500) {
+										"<fb:m\\u002e" + tmp_fbMID + ">") > 2000) {
 							test = a.getFacc12().get(
 									"<fb:m\\u002e" + tmp_fbMID + ">");
 							fbMID = tmp_fbMID;

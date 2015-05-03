@@ -15,8 +15,8 @@ public class start {
 		LocalRun lr = new LocalRun();
 		lr.Run(folderPath);
 		
-//		Score s = new Score();
-//		s.run(folderPath);
+		Score s = new Score();
+		s.run(folderPath);
 		System.out.println("Done!");
 	}
 }

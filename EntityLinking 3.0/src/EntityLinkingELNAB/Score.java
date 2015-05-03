@@ -81,36 +81,72 @@ public class Score {
 				else 
 					length = goldenAnnotations.size();
 
-				System.out.println(filename + " - " + length + "||"+ goldenAnnotations.size()+"|"+selfAnnotations.size());
+//				System.out.println(filename + " - " + length + "||"+ goldenAnnotations.size()+"|"+selfAnnotations.size());
 				
 				int goldenK = 0;
 				int selfL = 0;
+				
+				float pre = 0;
+				float rec = 0;
+				float off = 0;
+				
 				StringBuilder output = new StringBuilder();
+				StringBuilder scor = new StringBuilder();
+				
 				output.append("GoldenW \t FBmid \t BOffset \t BOffset \t FBmid \t SpottW\n");
-				for (int j = 0; j < length; j++) {
-//					System.out.println(goldenK+":|"+ goldenAnnotations.size()+"||"+selfAnnotations.size()+ "|:"+selfL);
+				for (int j = 0; j <= length+1; j++) {
+//					System.out.println(filename+" - "+goldenK+":|"+ goldenAnnotations.size()+"||"+selfAnnotations.size()+ "|:"+selfL);
+					
 //					System.out.println(goldenAnnotations.get(goldenK).getBeginOffset() +"<->"+  selfAnnotations.get(selfL).getBeginOffset()+
-//							"=" +(goldenAnnotations.get(goldenK).getBeginOffset().intValue() == selfAnnotations.get(selfL).getBeginOffset().intValue()));
+//							"=" +(goldenAnnotations.get(goldenK).getBeginOffset() == selfAnnotations.get(selfL).getBeginOffset()));
+						if(selfAnnotations.size()>0 && goldenAnnotations.size()>0){
+							if((goldenAnnotations.get(goldenK).getBeginOffset().intValue() <= selfAnnotations.get(selfL).getBeginOffset().intValue()) 
+									&& (goldenAnnotations.get(goldenK).getEndOffset().intValue()) >= selfAnnotations.get(selfL).getBeginOffset().intValue()) {
 						
-					if(goldenAnnotations.get(goldenK).getBeginOffset().intValue() == selfAnnotations.get(selfL).getBeginOffset().intValue()){
-							output.append(goldenAnnotations.get(goldenK).getMentionText()+ "\t" +goldenAnnotations.get(goldenK).getPrimaryID()
-									+ "\t" + goldenAnnotations.get(goldenK).getBeginOffset()
-									+ "\t" + selfAnnotations.get(selfL).getBeginOffset() 
-									+ "\t" + selfAnnotations.get(selfL).getPrimaryID()+ "\t" + selfAnnotations.get(selfL).getMentionText()+"\n");
-							if(goldenK<goldenAnnotations.size()-1){
-								goldenK++;}
-							if(selfL<selfAnnotations.size()-1){
-								selfL++;}
+									output.append(goldenAnnotations.get(goldenK).getMentionText()+ "\t" +goldenAnnotations.get(goldenK).getPrimaryID()
+											+ "\t" + goldenAnnotations.get(goldenK).getBeginOffset()
+											+ "\t" + selfAnnotations.get(selfL).getBeginOffset() 
+											+ "\t" + selfAnnotations.get(selfL).getPrimaryID()+ "\t" + selfAnnotations.get(selfL).getMentionText()+"\n");
+									if(goldenAnnotations.get(goldenK).getPrimaryID().equals(selfAnnotations.get(selfL).getPrimaryID())){
+										pre++;
+										length--;
+									}else{
+										off++;
+									}
+									if(goldenK<goldenAnnotations.size()-1){
+										goldenK++;}
+									if(selfL<selfAnnotations.size()-1){
+										selfL++;}
+							
+							}else if((selfAnnotations.get(selfL).getEndOffset().intValue() >= goldenAnnotations.get(goldenK).getBeginOffset().intValue()) 
+									&& (selfAnnotations.get(selfL).getEndOffset().intValue() <= goldenAnnotations.get(goldenK).getEndOffset().intValue())) {
+							
+									output.append(goldenAnnotations.get(goldenK).getMentionText()+ "\t" +goldenAnnotations.get(goldenK).getPrimaryID()
+											+ "\t" + goldenAnnotations.get(goldenK).getBeginOffset()
+											+ "\t" + selfAnnotations.get(selfL).getBeginOffset() 
+											+ "\t" + selfAnnotations.get(selfL).getPrimaryID()+ "\t" + selfAnnotations.get(selfL).getMentionText()+"\n");
+									if(goldenAnnotations.get(goldenK).getPrimaryID().equals(selfAnnotations.get(selfL).getPrimaryID())){
+										pre++;
+										length--;
+									}else{
+										off++;
+									}
+								
+									if(goldenK<goldenAnnotations.size()-1){
+										goldenK++;}
+									if(selfL<selfAnnotations.size()-1){
+										selfL++;}
+								}
 						}
 						
-						if(goldenAnnotations.get(goldenK).getBeginOffset().intValue() < selfAnnotations.get(selfL).getBeginOffset().intValue()){
+						if((selfAnnotations.size()==0) || goldenAnnotations.get(goldenK).getBeginOffset().intValue() < selfAnnotations.get(selfL).getBeginOffset().intValue()){
 							output.append(goldenAnnotations.get(goldenK).getMentionText()+ "\t" +goldenAnnotations.get(goldenK).getPrimaryID()
 									+ "\t" + goldenAnnotations.get(goldenK).getBeginOffset()
 									+ "\t  NULL \t  NULL \t  NULL" +"\n");
 							if(goldenK<goldenAnnotations.size()-1){
 								goldenK++;}
 							}
-						if(selfAnnotations.get(selfL).getBeginOffset().intValue() < goldenAnnotations.get(goldenK).getBeginOffset().intValue()){
+						if((selfAnnotations.size()>0) && selfAnnotations.get(selfL).getBeginOffset().intValue() < goldenAnnotations.get(goldenK).getBeginOffset().intValue()){
 							output.append("NULL \t  NULL \t  NULL \t" + selfAnnotations.get(selfL).getBeginOffset() 
 									+ "\t" + selfAnnotations.get(selfL).getPrimaryID()+ "\t" + selfAnnotations.get(selfL).getMentionText()+"\n");
 							if(selfL<selfAnnotations.size()-1){
@@ -121,11 +157,16 @@ public class Score {
 					
 
 				}
-//				System.out.println(output);
+				float Precision = pre/goldenAnnotations.size();
+				float Recall = pre/selfAnnotations.size();
+				float f1 = 2*(Precision * Recall)/(Precision + Recall);
+				float offset = off/goldenAnnotations.size();
+				scor.append(filename+"\t"+Precision+"\t"+Recall+"\t"+f1+"\t"+offset);
+
+				System.out.println(scor);
 				write.printToFile(output.toString(), folderPath, filename,
 						true, "CompareTVS");
-				System.out
-						.println("-----------------------------------------------------------");
+				
 			}
 		}
 

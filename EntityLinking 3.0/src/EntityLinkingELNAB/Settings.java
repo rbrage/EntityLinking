@@ -10,7 +10,9 @@ public class Settings {
 	private boolean pluralApostrophe_remove = false;
 	private boolean symbols_remove = false;
 	private boolean solvSuspectSpotts = false;
+	private boolean makeGraphDisambigutation = false;
 	
+
 	boolean makegraf = false;
 	boolean makefreebaseCalls = false;
 	
@@ -48,6 +50,14 @@ public class Settings {
 
 	public void setSolvSuspectSpotts(boolean solvSuspectSpotts) {
 		this.solvSuspectSpotts = solvSuspectSpotts;
+	}
+	
+	public boolean isMakeGraphDisambigutation() {
+		return makeGraphDisambigutation;
+	}
+
+	public void setMakeGraphDisambigutation(boolean makeGraphDisambigutation) {
+		this.makeGraphDisambigutation = makeGraphDisambigutation;
 	}
 
 	public boolean isMakegraf() {

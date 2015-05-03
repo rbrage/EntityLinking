@@ -39,6 +39,7 @@ public class ELNAB {
 		settings.setPluralApostrophe_remove(true);
 		settings.setSymbols_remove(true);
 		settings.setSolvSuspectSpotts(true);
+		settings.setMakeGraphDisambigutation(true);
 		settings.setMakefreebaseCalls(false);
 		settings.setMakegraf(false);
 

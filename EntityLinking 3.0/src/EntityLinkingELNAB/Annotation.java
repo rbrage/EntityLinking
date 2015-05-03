@@ -3,6 +3,7 @@ package EntityLinkingELNAB;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class Annotation {
@@ -11,6 +12,8 @@ public class Annotation {
 	private int EndOffset;
 	private int BeginOffset2;
 	private int EndOffset2;
+	private int BeginOffset3;
+	private int EndOffset3;
 	private String PrimaryID;
 	private String SecondID;
 	private String MentionText;
@@ -19,7 +22,7 @@ public class Annotation {
 	private float Score1;
 	private float Score2;
 	private boolean suspect;
-	
+	private LinkedList<Integer> linebreaks;
 	private float maxScore;
 	
 	private LinkedHashMap<String, Long> facc12;
@@ -49,6 +52,7 @@ public class Annotation {
 	public void setDocId(String docId) {
 		DocId = docId;
 	}
+	
 	public Integer getBeginOffset() {
 		return BeginOffset;
 	}
@@ -60,6 +64,30 @@ public class Annotation {
 	}
 	public void setEndOffset(Integer endOffset) {
 		EndOffset = endOffset;
+	}
+	public Integer getBeginOffset2() {
+		return BeginOffset2;
+	}
+	public void setBeginOffset2(Integer beginOffset2) {
+		BeginOffset2 = beginOffset2;
+	}
+	public Integer getEndOffset2() {
+		return EndOffset2;
+	}
+	public void setEndOffset2(Integer endOffset2) {
+		EndOffset2 = endOffset2;
+	}
+	public Integer getBeginOffset3() {
+		return BeginOffset3;
+	}
+	public void setBeginOffset3(Integer beginOffset3) {
+		BeginOffset3 = beginOffset3;
+	}
+	public Integer getEndOffset3() {
+		return EndOffset3;
+	}
+	public void setEndOffset3(Integer endOffset3) {
+		EndOffset3 = endOffset3;
 	}
 	public String getPrimaryID() {
 		return PrimaryID;
@@ -111,18 +139,6 @@ public class Annotation {
 		this.maxScore = maxScore;
 	}
 	
-	public Integer getBeginOffset2() {
-		return BeginOffset2;
-	}
-	public void setBeginOffset2(Integer beginOffset2) {
-		BeginOffset2 = beginOffset2;
-	}
-	public Integer getEndOffset2() {
-		return EndOffset2;
-	}
-	public void setEndOffset2(Integer endOffset2) {
-		EndOffset2 = endOffset2;
-	}
 	public boolean isSuspect() {
 		return suspect;
 	}
@@ -147,17 +163,26 @@ public class Annotation {
 	public void setShearchWord(String shearchWord) {
 		ShearchWord = shearchWord;
 	}
+	public LinkedList<Integer> getLinebreaks() {
+		return linebreaks;
+	}
+	public void setLinebreaks(LinkedList<Integer> linebreaks) {
+		this.linebreaks = linebreaks;
+	}
+	
 	@Override
 	public String toString() {
 		return "Annotation \n  DocId=" + DocId + ",\n  BeginOffset=" + BeginOffset
 				+ ",\n  EndOffset=" + EndOffset + ",\n  BeginOffset2=" + BeginOffset2
-				+ ",\n  EndOffset2=" + EndOffset2 + ",\n  PrimaryID=" + PrimaryID
+				+ ",\n  EndOffset2=" + EndOffset2 +",\n  BeginOffset3=" + BeginOffset3
+				+ ",\n  PrimaryID=" + PrimaryID
 				+ ",\n  SecondID=" + SecondID + ",\n  MentionText=" + MentionText
 				+ ",\n  MentionText2=" + MentionText2 + ",\n  ShearchWord="
 				+ ShearchWord + ", Score1=" + Score1 + ",\n  Score2=" + Score2
 				+ ",\n  suspect=" + suspect + ",\n  maxScore=" + maxScore
 				+ ",\n  facc12=" + facc12 + ",\n  new_facc12=" + new_facc12
-				+ ",\n  dbpediaCandidate=" + dbpediaCandidate + "\n ";
+				+ ",\n  dbpediaCandidate=" + dbpediaCandidate
+				+ ",\n 	linebreaks=" + linebreaks + "\n ";
 	}
 	
 	
