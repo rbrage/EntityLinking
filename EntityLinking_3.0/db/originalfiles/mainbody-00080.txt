@@ -1,0 +1,32 @@
+Revealed: Why your office colleagues and neighbours are getting to see the World Cup action seconds before you 
+
+Graham Smith UPDATED: 09:43 EST, 29 June 2010
+With the World Cup and Wimbledon both in full swing, it's been the burning question of the summer in offices and bars up and down the country.
+Just why do certain televisions broadcast live sports, or for that matter any live programme, seconds earlier than other sets?
+In offices, football fans are constantly annoyed by colleagues screaming or groaning seconds before their TV catches up - while those watching in pubs or in back gardens have their viewing ruined by boisterous neighbours.
+It kind of takes the excitement out of the World Cup - and rather makes a mockery of the term 'live coverage.'
+Big match: Why do some TVs broadcast live events seconds before other sets?
+So what's the explanation, and why is it always the crumby televisions that are ahead of the pack?
+The answer lies both with the television being watched and the method of broadcast it is receiving.
+Coding delays are the most common cause, both in your TV set and at the broadcaster's end.
+At home, digital equipment contains software that decodes the broadcasting signal. A general rule of thumb is the more detail in the signal then the longer it takes to decode, thereby causing a short delay.
+For this reason, viewers watching via an analogue signal - or with their aerial lead plugged directly from the television into the wall as has been the way for decades - will most likely receive their signal first. Their 'live' broadcast is likely to suffer a delay of a second or less.
+This is why those watching on older, analogue TVs will most likely be a few seconds ahead of their high-definition counterparts.
+Almost live: Coding delays in your television set and at the broadcaster's end are the most common cause
+Those watching on hi-def televisions, however, will most likely be
+watching events last due to the extra time spent decoding their high
+quality signal.
+However it's at the broadcaster's end where the delays really build up.
+Each company has its own method of encoding digital signals and these take various lengths of time, although most within a couple of seconds of each other.
+Likewise, it also makes a difference whether you're receiving your signal through
+Sky, Virgin, Tiscali or any other of the UK's numerous digital
+providers.
+Each provider again has individual ways of decoding a broadcaster's digital signal, some taking longer than others.
+Jos Hirst, a lecturer in audio technology at Salford University in
+Manchester, said: 'A digital signal needs to be decoded on whatever
+equipment you're watching it on.
+'Decoding on your television can make a small difference, but it's at
+the broadcaster's end where delays are most likely to take place.'
+By the same token those watching sports events online also have to contend with possible tiny delays while a signal travels through an IP network.
+With so many options to watch television now available, where you stand in the hierarchy of receiving live broadcasts is difficult to pinpoint.
+But, as a guide, the more high quality the broadcast, the longer the broadcast delay.

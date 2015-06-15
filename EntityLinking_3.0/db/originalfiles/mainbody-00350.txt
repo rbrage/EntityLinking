@@ -1,0 +1,11 @@
+Hasbro Compilation: Monopoly/Boggle/Yahtzee/Battleship 
+
+The individual board games featured in the Hasbro Compilation are: Monopoly, Boggle, Yahtzee and Battleship. All the games use the DS's touch screen and support the console's Wi-Fi capabilities, resulting in various multiplayer options.
+
+Monopoly is one of the best-selling board games in the world. Players compete to acquire wealth through economic activity involving the buying, rental, and trading of real estate using play money, as players take turns moving around the board following the roll of the dice.
+
+Boggle is a word game, and play starts by randomising a tray of 16 dice-like 'letter cubes', normally by shaking. Each cube has a different letter printed on each of its sides. The cubes settle in a 4x4 tray, so that only the top letter of each cube can be seen. Each player then has three minutes to search for words that can be made from the letters of sequentially adjacent cubes. The players must record all words found by writing on their private sheets of paper. After the three minutes have elapsed, all players must stop writing and the game enters the scoring phase.
+
+Yahtzee is a popular dice game made by Milton Bradley (now owned by Hasbro). The object of the game is to score the most points by rolling certain combinations of numbers with five dice. Players must roll at least three of a kind of all six die face values to achieve a bonus, and must also attain certain poker hands, such as four of a kind, full house and straight. A Yahtzee is five of a kind.
+
+Battleship is a guessing game played by two people. Before play begins, each player must arrange a number of ships secretly on a grid.  Each ship occupies a number of consecutive squares on the grid, arranged either horizontally or vertically. Players must then announce a list of target squares in their opponents grid to be shot at. When all of the squares of a ship have been hit, the ship is sunk. If at the end of a round, all of one player's ships have been sunk, the game ends and the other player wins. If all of both players' ships are sunk, the game ends in a tie.
